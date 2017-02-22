@@ -1,0 +1,27 @@
+<project name="Demo" default="compile" basedir=".">
+  <property name="source" value="${basedir}/src"/>
+  <property name="targetdir" value="${basedir}/build"/>
+  <property name="librarydir" value="${basedir}/lib"/>
+  <path id="libraries">
+    <fileset dir="${librarydir}">
+      <include name="*.jar"/>
+    </fileset>
+  </path>
+  <target name="clean">
+     <delete dir="${targetdir}"/>
+     <mkdir dir="${targetdir}"/>
+  </target>
+  <target name="compile">
+    <copy todir="${targetdir}">
+      <fileset dir="${source}">
+        <exclude name="**/*.java"/>
+      </fileset>
+    </copy>
+    <javac srcdir="${source}" destdir="${targetdir}" classpathref="libraries" debug="on" nowarn="true"/>
+  </target>
+	  <target name="run" depends="compile">
+	     <java classname="Main" fork="true" classpathref="libraries" maxmemory="1024m">
+	       <classpath path="${targetdir}"/>
+	     </java>
+	  </target>
+</project>
